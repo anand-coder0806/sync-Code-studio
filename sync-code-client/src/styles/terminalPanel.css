@@ -1,0 +1,766 @@
+/**
+ * Terminal/Output Panel - VS Code Standard Layout & Styling
+ * Implements production-grade IDE terminal with proper CWD display,
+ * full-width utilization, and correct grid/flex attachment
+ */
+
+/* ==========================================
+   ROOT PANEL CONTAINER (vscode-dock-panel)
+   ========================================== */
+.vscode-dock-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-size: 12px;
+  border-top: 1px solid #333;
+  overflow: hidden;
+}
+
+/* ==========================================
+   TAB BAR (vscode-dock-tabs)
+   ========================================== */
+.vscode-dock-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 0 12px;
+  min-height: 34px;
+  background: #252526;
+  border-bottom: 1px solid #333;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.vscode-dock-tab,
+.editor-container .vscode-dock-tab {
+  position: relative;
+  flex: 0 0 auto;
+  min-width: max-content;
+  border: none;
+  border-radius: 0;
+  padding: 8px 14px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #a7adb7;
+  background: transparent;
+  cursor: pointer;
+  transition: all 180ms ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.vscode-dock-tab:hover,
+.editor-container .vscode-dock-tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #d7dbe1;
+}
+
+.vscode-dock-tab.is-active,
+.editor-container .vscode-dock-tab.is-active {
+  color: #ffffff;
+  background: #1e1e1e;
+}
+
+.vscode-dock-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  bottom: 0;
+  height: 2px;
+  background: #007acc;
+  border-radius: 2px 2px 0 0;
+}
+
+/* ==========================================
+   PANEL BODY / CONTENT AREA
+   ========================================== */
+.vscode-dock-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-view {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease;
+}
+
+.panel-view.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+  inset: auto;
+}
+
+/* ==========================================
+   TERMINAL PANEL STRUCTURE
+   ========================================== */
+.terminal-panel-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #1e1e1e;
+}
+
+/* Terminal session tabs */
+.terminal-session-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 30px;
+  padding: 0 8px;
+  background: #252526;
+  border-bottom: 1px solid #333;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.terminal-session-tabs__item {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.terminal-session-tab,
+.editor-container .terminal-session-tab {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: #b5bcc7;
+  min-height: 24px;
+  padding: 0 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 120ms ease;
+  white-space: nowrap;
+}
+
+.terminal-session-tab:hover,
+.editor-container .terminal-session-tab:hover {
+  color: #d7dbe1;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.terminal-session-tab.is-active,
+.editor-container .terminal-session-tab.is-active {
+  color: #ffffff;
+  background: #1e1e1e;
+  border-bottom: 2px solid #007acc;
+}
+
+.terminal-session-tab__close,
+.editor-container .terminal-session-tab__close {
+  border: none;
+  border-radius: 3px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0;
+  margin-left: 4px;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 120ms ease;
+}
+
+.terminal-session-tab__close:hover,
+.editor-container .terminal-session-tab__close:hover {
+  background: #323234;
+  color: #f3f4f6;
+}
+
+/* ==========================================
+   TERMINAL HEADER (CWD Display)
+   ========================================== */
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 34px;
+  padding: 0 10px;
+  background: #252526;
+  border-bottom: 1px solid #333;
+  user-select: none;
+}
+
+.terminal-header__path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #9cdcfe;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.terminal-header__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.terminal-header__btn,
+.editor-container .terminal-header__btn {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  min-height: 22px;
+  min-width: 22px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #c6ced8;
+  background: transparent;
+  cursor: pointer;
+  transition: all 120ms ease;
+  user-select: none;
+}
+
+.terminal-header__btn:hover,
+.editor-container .terminal-header__btn:hover {
+  background: #323234;
+  border-color: #444;
+  color: #e0e4eb;
+}
+
+.terminal-header__btn:active,
+.editor-container .terminal-header__btn:active {
+  background: #3a3a3d;
+  border-color: #555;
+}
+
+/* ==========================================
+   TERMINAL OUTPUT AREA
+   ========================================== */
+.terminal-output {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  background: #1e1e1e;
+  overflow: hidden;
+}
+
+.terminal-output--split {
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid #2a2a2b;
+}
+
+.terminal-output__pane {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+  border-right: 1px solid #2f2f31;
+}
+
+.terminal-output__pane:last-child {
+  border-right: none;
+}
+
+.terminal-output__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 10px;
+  background: #1e1e1e;
+}
+
+/* Scrollbar styling */
+.terminal-output__scroll::-webkit-scrollbar {
+  width: 12px;
+}
+
+.terminal-output__scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-output__scroll::-webkit-scrollbar-thumb {
+  background: #464647;
+  border-radius: 6px;
+  min-height: 40px;
+}
+
+.terminal-output__scroll::-webkit-scrollbar-thumb:hover {
+  background: #5a5b5c;
+}
+
+/* ==========================================
+   TERMINAL LINES (Output Text)
+   ========================================== */
+.terminal-line {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.48;
+  font-size: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.terminal-line--stdout,
+.terminal-line--prompt,
+.terminal-line--system {
+  color: #d4d4d4;
+}
+
+.terminal-line--stderr {
+  color: #f48771;
+  font-weight: 500;
+}
+
+.terminal-line--success {
+  color: #4ec9b0;
+}
+
+.terminal-line--warning {
+  color: #dcdcaa;
+}
+
+.terminal-line--info {
+  color: #4fc1ff;
+}
+
+/* ==========================================
+   TERMINAL INPUT BAR
+   ========================================== */
+.terminal-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  border-top: 1px solid #333;
+  padding: 0 10px;
+  background: #1e1e1e;
+  user-select: none;
+}
+
+.terminal-input-bar__cwd {
+  color: #569cd6;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 200px;
+}
+
+.terminal-input-bar__prompt {
+  color: #d4d4d4;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.terminal-input {
+  border: none;
+  border-radius: 0;
+  outline: none;
+  padding: 0;
+  line-height: 1.48;
+  min-width: 0;
+  flex: 1;
+  color: #d4d4d4;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  caret-color: #007acc;
+}
+
+.terminal-input::placeholder {
+  color: #696969;
+}
+
+.terminal-input:focus {
+  background: rgba(0, 122, 204, 0.06);
+}
+
+/* ==========================================
+   OUTPUT/PROBLEMS PANEL CONTENT
+   ========================================== */
+.panel-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #1e1e1e;
+}
+
+/* Output toolbar */
+.output-toolbar,
+.problems-toolbar {
+  min-height: 34px;
+  border-bottom: 1px solid #333;
+  background: #252526;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.output-toolbar__title,
+.problems-toolbar__title {
+  color: #d4d4d4;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.output-toolbar__clear,
+.editor-container .output-toolbar__clear {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  min-height: 22px;
+  padding: 0 8px;
+  font-size: 11px;
+  color: #cbd5e1;
+  background: transparent;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.output-toolbar__clear:hover,
+.editor-container .output-toolbar__clear:hover {
+  border-color: #4b5563;
+  background: #303033;
+  color: #e0e4eb;
+}
+
+/* Output/Problems lists */
+.output-list,
+.problems-list {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: #1e1e1e;
+}
+
+/* Output rows */
+.output-row {
+  display: grid;
+  align-items: start;
+  grid-template-columns: 86px minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(51, 51, 51, 0.45);
+  min-height: 22px;
+}
+
+.output-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.output-row__time {
+  color: #8b949e;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.output-row__text {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #d4d4d4;
+  line-height: 1.4;
+}
+
+.output-row__copy,
+.editor-container .output-row__copy {
+  border: none;
+  border-radius: 3px;
+  min-height: 20px;
+  padding: 0 6px;
+  font-size: 11px;
+  color: #adb6c0;
+  background: transparent;
+  cursor: pointer;
+  transition: all 120ms ease;
+  flex-shrink: 0;
+}
+
+.output-row__copy:hover,
+.editor-container .output-row__copy:hover {
+  background: #2f2f31;
+  color: #f3f4f6;
+}
+
+.output-row--success .output-row__text {
+  color: #4ec9b0;
+}
+
+.output-row--error .output-row__text {
+  color: #f48771;
+}
+
+.output-row--warning .output-row__text {
+  color: #dcdcaa;
+}
+
+.output-row--info .output-row__text {
+  color: #4fc1ff;
+}
+
+/* Problems display */
+.problems-toolbar__count {
+  color: #d16969;
+  font-size: 11px;
+  margin-left: 8px;
+}
+
+.problem-group {
+  border-bottom: 1px solid rgba(51, 51, 51, 0.45);
+}
+
+.problem-group__header,
+.editor-container .problem-group__header {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 0;
+  background: #1e1e1e;
+  color: #cfd6df;
+  min-height: 30px;
+  padding: 0 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.problem-group__header:hover,
+.editor-container .problem-group__header:hover {
+  background: #252527;
+}
+
+.problem-group__arrow {
+  color: #8b949e;
+  font-size: 10px;
+}
+
+.problem-group__file {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.problem-group__count {
+  color: #9aa3ae;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.problem-group__items {
+  background: #1b1b1c;
+}
+
+.problem-item,
+.editor-container .problem-item {
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  min-height: 28px;
+  padding: 0 10px 0 32px;
+  background: transparent;
+  color: #d4d4d4;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 100ms ease;
+}
+
+.problem-item:hover,
+.editor-container .problem-item:hover {
+  background: #252527;
+}
+
+.problem-item__line {
+  color: #8b949e;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.problem-item__message {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+
+.output-empty {
+  padding: 16px 12px;
+  font-size: 12px;
+  color: #8b949e;
+  text-align: center;
+}
+
+/* ==========================================
+   COLLABORATIVE CHAT PANEL (Preserved)
+   ========================================== */
+.room-chat-panel__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 36px;
+  border-bottom: 1px solid #252934;
+  padding: 0 0.75rem;
+}
+
+.room-chat-panel__toolbar-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.room-chat-callbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid #252934;
+  background: #0f131a;
+  overflow-x: auto;
+}
+
+.room-chat-panel__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.room-chat-panel__title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.room-chat-panel__subtitle {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.room-chat-panel__status {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  padding: 0.15rem 0.45rem;
+  white-space: nowrap;
+}
+
+.room-chat-panel__status.is-live {
+  color: #38bdf8;
+  border-color: #0f766e;
+}
+
+.room-chat-panel__notify-btn {
+  border: 1px solid #334155;
+  background: #0f131a;
+  color: #cbd5e1;
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.room-chat-panel__notify-btn:hover {
+  background: #18202c;
+  border-color: #475569;
+}
+
+.room-chat-panel__error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #3f1d1d;
+  background: rgba(127, 29, 29, 0.22);
+  color: #fecaca;
+  font-size: 0.78rem;
+}
+
+.room-chat-panel__error button {
+  border: none;
+  background: transparent;
+  color: #fecaca;
+  cursor: pointer;
+}
+
+.room-chat-panel__typing {
+  padding: 0.35rem 0.75rem 0;
+  color: #60a5fa;
+  font-size: 0.75rem;
+}
+
+.room-chat-presence {
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid #252934;
+  overflow-x: auto;
+}
+
+.room-chat-presence__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  padding: 0.2rem 0.45rem;
+  white-space: nowrap;
+  color: #cbd5e1;
+  font-size: 0.72rem;
+}
+
+.room-chat-presence__item.is-speaking {
+  border-color: #22d3ee;
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.25);
+}
+
+.room-chat-presence__name {
+  color: #f8fafc;
+  font-weight: 500;
+}
+
+.room-chat-presence__state {
+  color: #93c5fd;
+}
+
+.room-chat-presence__badge {
+  background: rgba(59, 130, 246, 0.22);
+  color: #bfdbfe;
+  padding: 0.05rem 0.25rem;
+  border-radius: 2px;
+  font-size: 0.65rem;
+}

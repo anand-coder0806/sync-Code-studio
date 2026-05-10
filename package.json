@@ -1,0 +1,12 @@
+{
+  "name": "sync-code",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix ./sync-code-client run build",
+    "server": "npm --prefix ./sync-code-server start",
+    "client": "npm --prefix ./sync-code-client start",
+    "dev": "node ./scripts/dev-runner.js",
+    "start:prod": "node ./scripts/prod-runner.js"
+  },
+  "devDependencies": {}
+}

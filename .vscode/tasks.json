@@ -1,0 +1,145 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run MERN dev",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Build sync-code-client",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"--prefix",
+				"./sync-code-client",
+				"run",
+				"build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Install sync-code-client deps",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"--prefix",
+				"./sync-code-client",
+				"install",
+				"--no-fund",
+				"--no-audit",
+				"--progress=false"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Check npm registry",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"view",
+				"framer-motion",
+				"version"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Install framer-motion only",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"--prefix",
+				"./sync-code-client",
+				"install",
+				"framer-motion@^11.11.11",
+				"--no-fund",
+				"--no-audit",
+				"--progress=false"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Install framer-motion in cwd",
+			"type": "shell",
+			"command": "Set-Location ./sync-code-client; npm install framer-motion@^11.11.11 --no-fund --no-audit --progress=false",
+			"isBackground": false
+		},
+		{
+			"label": "Check npm processes",
+			"type": "shell",
+			"command": "Get-Process node,npm -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,CPU,StartTime",
+			"isBackground": false
+		},
+		{
+			"label": "Find hanging npm installs",
+			"type": "shell",
+			"command": "Get-CimInstance Win32_Process | Where-Object { $_.Name -in @('node.exe','npm.cmd','npm.exe') -and $_.CommandLine -match 'npm' -and $_.CommandLine -match 'install' -and $_.CommandLine -match 'sync-code-client' } | Select-Object ProcessId,Name,CommandLine",
+			"isBackground": false
+		},
+		{
+			"label": "Stop hanging npm installs",
+			"type": "shell",
+			"command": "$p = Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match 'npm-cli' -and $_.CommandLine -match 'install' -and $_.CommandLine -match 'sync-code-client' }; $ids = $p.ProcessId; if ($ids) { Stop-Process -Id $ids -Force; Write-Output (\"Stopped: \" + ($ids -join ', ')) } else { Write-Output 'No hanging install processes found' }",
+			"isBackground": false
+		},
+		{
+			"label": "Force stop npm install nodes",
+			"type": "shell",
+			"command": "$p = Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match 'npm-cli' -and $_.CommandLine -match 'install' -and $_.CommandLine -match 'sync-code-client' }; if ($p) { Stop-Process -Id ($p.ProcessId) -Force }; Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match 'npm-cli' -and $_.CommandLine -match 'install' -and $_.CommandLine -match 'sync-code-client' } | Select-Object ProcessId,Name",
+			"isBackground": false
+		},
+		{
+			"label": "Taskkill hanging npm nodes",
+			"type": "shell",
+			"command": "for %p in (18592 27864 3432 34692 41684 38264) do taskkill /PID %p /F",
+			"isBackground": false
+		},
+		{
+			"label": "Stop process list",
+			"type": "shell",
+			"command": "Stop-Process -Id 18592,27864,3432,34692,41684,38264 -Force -ErrorAction SilentlyContinue; Get-Process -Id 18592,27864,3432,34692,41684,38264 -ErrorAction SilentlyContinue | Select-Object Id,ProcessName",
+			"isBackground": false
+		},
+		{
+			"label": "Test stop node with error output",
+			"type": "shell",
+			"command": "Stop-Process -Id 3432 -Force -Verbose",
+			"isBackground": false
+		},
+		{
+			"label": "Recheck install node procs",
+			"type": "shell",
+			"command": "Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'node.exe' -and $_.CommandLine -match 'npm-cli' -and $_.CommandLine -match 'install' -and $_.CommandLine -match 'sync-code-client' } | Select-Object ProcessId",
+			"isBackground": false
+		},
+		{
+			"label": "Taskkill one node",
+			"type": "shell",
+			"command": "taskkill /PID 3432 /F",
+			"isBackground": false
+		},
+		{
+			"label": "Check framer module exists",
+			"type": "shell",
+			"command": "if (Test-Path \"./sync-code-client/node_modules/framer-motion\") { Write-Output \"YES\" } else { Write-Output \"NO\" }",
+			"isBackground": false
+		},
+		{
+			"label": "Install framer-motion verbose",
+			"type": "shell",
+			"command": "npm --prefix ./sync-code-client install framer-motion@12.38.0 --verbose --fetch-retries=0 --fetch-timeout=20000 --no-fund --no-audit",
+			"isBackground": false
+		},
+		{
+			"label": "Check framer during install",
+			"type": "shell",
+			"command": "if (Test-Path \"./sync-code-client/node_modules/framer-motion/package.json\") { Get-Content \"./sync-code-client/node_modules/framer-motion/package.json\" -TotalCount 20 } else { Write-Output \"NOT_YET\" }",
+			"isBackground": false
+		}
+	]
+}

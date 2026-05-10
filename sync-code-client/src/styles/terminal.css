@@ -1,0 +1,207 @@
+.terminal-panel {
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+  border-top: 1px solid #3e3e42;
+  min-height: 150px;
+  max-height: 60vh;
+  overflow: hidden;
+}
+
+.terminal-resize-handle {
+  height: 4px;
+  width: 100%;
+  background: #3e3e42;
+  cursor: row-resize;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 0.12s ease;
+}
+
+.terminal-resize-handle:hover,
+.terminal-resize-handle.dragging {
+  background: #007acc;
+}
+
+.terminal-resize-handle:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: -2px;
+}
+
+.vscode-terminal-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+  overflow: hidden;
+}
+
+.terminal-tab-bar {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  background: #252526;
+  border-bottom: 1px solid #3e3e42;
+  padding: 0 10px;
+}
+
+.terminal-tab {
+  color: #f3f4f6;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0 2px;
+  border-bottom: 1px solid #007acc;
+}
+
+.xterm-container {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.terminal-fallback {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  gap: 8px;
+}
+
+.terminal-output {
+  flex: 1;
+  overflow: auto;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #d4d4d4;
+  padding-right: 4px;
+}
+
+.terminal-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal-line--stdout,
+.terminal-line--system {
+  color: #d4d4d4;
+}
+
+.terminal-line--stderr {
+  color: #ff6b6b;
+}
+
+.terminal-line--success {
+  color: #86efac;
+}
+
+.terminal-line--prompt {
+  color: #a7f3d0;
+}
+
+.terminal-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.terminal-prompt {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-top: 1px solid #3e3e42;
+  color: #f3f4f6;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 8px 0 0;
+  outline: none;
+}
+
+.terminal-input::placeholder {
+  color: #6b7280;
+}
+
+.terminal-input:disabled {
+  color: #9ca3af;
+}
+
+.vscode-terminal-wrapper .xterm {
+  width: 100%;
+  height: 100%;
+}
+
+.vscode-terminal-wrapper .xterm-screen {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+.vscode-terminal-wrapper .xterm-cursor.xterm-cursor-blink {
+  animation: xterm-cursor-blink 1s infinite;
+}
+
+@keyframes xterm-cursor-blink {
+  0% {
+    opacity: 1;
+  }
+
+  49% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  99% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.vscode-terminal-wrapper .xterm-viewport {
+  background-color: #1e1e1e;
+  overflow-y: auto;
+}
+
+.vscode-terminal-wrapper .xterm-viewport::-webkit-scrollbar {
+  width: 10px;
+}
+
+.vscode-terminal-wrapper .xterm-viewport::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.vscode-terminal-wrapper .xterm-viewport::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 5px;
+  border: 2px solid #1e1e1e;
+}
+
+.vscode-terminal-wrapper .xterm-viewport::-webkit-scrollbar-thumb:hover {
+  background: #5a5a5b;
+}
+
+.stdout-output {
+  color: #f3f4f6;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.stderr-output {
+  color: #ff6b6b;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 14px;
+}
